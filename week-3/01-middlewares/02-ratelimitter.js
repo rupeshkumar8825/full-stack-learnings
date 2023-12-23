@@ -16,6 +16,37 @@ setInterval(() => {
     numberOfRequestsForUser = {};
 }, 1000)
 
+
+// using this middleware in order to get the header of the request in the form of json 
+app.use(express.json());
+// making the global middleware to make the ratelimiter for a particular user for this purpose 
+const rateLimiterMiddleware = (req, res, next) => {
+  let currUserId = req.headers['user-id'];
+  // console.log("the current user id is \n", currUserId);
+
+  if(currUserId in numberOfRequestsForUser)
+  {
+    numberOfRequestsForUser[currUserId]++;
+    let curUserNumOfReq = numberOfRequestsForUser[currUserId];
+    if(curUserNumOfReq > 5)
+    {
+      res.status(404).send("Lot of requests");
+      // here we have to return 
+      return;
+    }
+  }
+  else {
+    // we have to add this into the dictiornary for this purpos e
+    numberOfRequestsForUser[currUserId] = 1;
+  }
+
+  // say everything went fine 
+  next();
+}
+
+
+app.use(rateLimiterMiddleware);
+
 app.get('/user', function(req, res) {
   res.status(200).json({ name: 'john' });
 });
