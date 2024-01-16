@@ -72,3 +72,21 @@ export function Assignment1() {
 //                         SIDE EFFECTS 
 // #################################################################################################
 // #################################################################################################
+
+
+
+
+
+// #################################################################################################
+// #################################################################################################
+//                         USECALLBACKS HOOK 
+// #################################################################################################
+// #################################################################################################
+// this is also a technique to optimize the performance of the react application for this purpose 
+// this is mainly used to avoid unnecessary re-rendering in the react applications. This optimization is done basically on the 
+// functions. we know functions are first class functions that means it can be treated as the variable itself for this purpose 
+1. when a component re-renders, every function inside of the component is recreated and 
+2. therefore these function's references change between renders 
+3. usecallback(callback, dependencies) will return a memoized instance of the callback that only changes if one of the dependencies has changed
+4. so it will not recreate the function again and again on every re-render of the react component for this purpose 
+5. 
