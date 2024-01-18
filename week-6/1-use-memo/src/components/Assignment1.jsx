@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 // In this assignment, your task is to create a component that performs an expensive calculation (finding the factorial) based on a user input. 
 // Use useMemo to ensure that the calculation is only recomputed when the input changes, not on every render.
@@ -6,7 +6,23 @@ import { useState } from "react";
 export function Assignment1() {
     const [input, setInput] = useState(0);
     // Your solution starts here
-    const expensiveValue = 0; 
+    // we can use the usememo to memoize the function result 
+    const expensiveValue = useMemo(() => {
+        console.log("the usememo function re-rendered \n");
+        if(input === 0 || input === 1)
+        {
+            return 1;
+        }
+
+        let responseValue = 1;
+        for(let i = 2;i<=input;i++)
+        {
+            responseValue = responseValue*i;
+        }
+
+        return responseValue
+    }, [input]); 
+
     // Your solution ends here
 
     return (
@@ -94,7 +110,7 @@ export function Assignment1() {
 
 // #################################################################################################
 // #################################################################################################
-//                         useMEMO Hook 
+//                         useMemo Hook 
 // #################################################################################################
 // #################################################################################################
 // 0. it means remembering some output given an input and not computing it again and again. Same as DP in DSA 
@@ -108,18 +124,21 @@ export function Assignment1() {
 
 
 
-
+// 254136
 
 // #################################################################################################
 // #################################################################################################
-//                         useCALLBACKS HOOK 
+//                         useCallbacks Hook 
 // #################################################################################################
 // #################################################################################################
 // this is also a technique to optimize the performance of the react application for this purpose 
 // this is mainly used to avoid unnecessary re-rendering in the react applications. This optimization is done basically on the 
 // functions. we know functions are first class functions that means it can be treated as the variable itself for this purpose 
+
 // 1. when a component re-renders, every function inside of the component is recreated and 
 // 2. therefore these function's references change between renders 
 // 3. usecallback(callback, dependencies) will return a memoized instance of the callback that only changes if one of the dependencies has changed
 // 4. so it will not recreate the function again and again on every re-render of the react component for this purpose 
-// 5. used to memoize functions, which can help  in optimizing the performance of your application, especially involving child components that rely on reference equality to prevent unnecessary renders
+// 5. used to memoize functions, which can help  in optimizing the performance of your application, especially involving  child components that rely on reference equality to prevent unnecessary renders
+
+
